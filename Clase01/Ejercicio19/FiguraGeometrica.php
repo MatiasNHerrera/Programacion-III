@@ -1,8 +1,8 @@
 <?php
 
-class FiguraGeometrica
+abstract class FiguraGeometrica
 {
-    protected $_color;
+    static protected $_color;
     protected $_perimetro;
     protected $_superficie;
 
