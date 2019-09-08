@@ -2,11 +2,11 @@
 
 include "Clases/productos.php";
 
-$op = 'ALTA';
+$op = "MOSTRAR";
 
 switch($op)
 {
-    case $_GET["op"]:
+    case "op":
 
     $producto = new Producto($_GET["nombre"], $_GET["cod"]);
 
@@ -15,4 +15,9 @@ switch($op)
         echo "Se pudo guardar";
     }
 
+    case "MOSTRAR":
+
+    var_dump(Producto::TraerTodosLosProductos());
+
 }
+

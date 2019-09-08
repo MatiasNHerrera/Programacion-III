@@ -44,13 +44,15 @@ class Producto
         while(!feof($archivo))
         {
             $lectura = fgets($archivo);
-            $auxiliar = explode(" - ");
-            array_push($array, new Producto($array[1], $array[0]));
+            $auxiliar = explode("-", $lectura);
+            array_push($array, new Producto($auxiliar[1], $auxiliar[0]));
         }
 
-        return $array;
+        for($i = 0; $i < count($array); $i++)
+        {
+            echo($array[$i]->toString()). "<br/>";
+        }
 
      }
 }
 
-echo var_dump(Producto::TraerTodosLosProductos());
