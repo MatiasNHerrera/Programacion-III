@@ -3,13 +3,13 @@
 include "productos.php";
 include "Archivos.php";
 
-$op = "op";
+$op = "MOSTRAR";
 
 switch($op)
 {
     case "op":
 
-    $producto = new Producto("matias", 123, "/Archivos/Chrysanthemum.jpg");
+    $producto = new Producto("tomas",126,Archivo::Subir());
 
     if(Producto::Guardar($producto))
     {
@@ -19,13 +19,15 @@ switch($op)
     case "MOSTRAR":
 
     $array = Producto::TraerTodosLosProductos();
-
-    /*for($i = 0; $i < count($array); $i++)
-        {
-            echo ($array[0]->toString());
-            //echo "<img src="$array[$i]->path">";
-        }
-        */
+    $destino = Archivo::Subir();
+    for($i = 0; $i < count($array); $i++)
+    {   
+        echo "<br/>";
+        echo ($array[$i]->toString());
+        echo "<img src='$destino' width='10%'";
+        echo "<br/>";
+    }
+        
     
 }
 

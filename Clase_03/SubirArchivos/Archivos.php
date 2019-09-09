@@ -2,7 +2,7 @@
 
 class Archivo
 {
-    public function Subir() //valida si se puede subir la imagen
+    public static function Subir() //valida si se puede subir la imagen
     {
         $subirArchivo = TRUE;
         $destino = "./Archivos/" . $_FILES["archivo"]["name"];
@@ -21,5 +21,7 @@ class Archivo
                 $validacion = true;
             }
         }
+
+        return $destino;
     }
 }

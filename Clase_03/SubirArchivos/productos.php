@@ -18,7 +18,7 @@ class Producto
 
     public function toString()
     {
-        return $this->cod_barra . "-" . $this->nombre . "-" . $this->path ."\n\r";   
+        return $this->nombre . " - " . $this->cod_barra . " - " . $this->path . "\r\n";   
     }
 
     public static function Guardar($obj)
@@ -46,10 +46,10 @@ class Producto
         while(!feof($archivo))
         {
             $lectura = fgets($archivo);
-            $auxiliar = explode("-", $lectura);
-            if(isset($auxiliar[1]) && isset($auxiliar[2]) && isset($auxiliar[0]))
+            $auxiliar = explode(" - ", $lectura);
+            if(isset($auxiliar[0]) && isset($auxiliar[0]) && isset($auxiliar[0]))
             {
-                array_push($array, new Producto($auxiliar[1], $auxiliar[0]), $auxiliar[2]);
+                array_push($array, new Producto($auxiliar[0], $auxiliar[1], $auxiliar[2]));
             }
         }
 
