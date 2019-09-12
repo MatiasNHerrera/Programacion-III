@@ -10,6 +10,8 @@ class Archivo
         if(file_exists($destino))
         {
             $subirArchivo = FALSE;
+            echo "ya existe el archivo, revise el path";
+            echo "<br/>";
         }
 
         if($subirArchivo)

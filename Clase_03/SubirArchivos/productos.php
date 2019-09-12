@@ -3,8 +3,8 @@
 class Producto
 {
     private $nombre;
-    private $cod_barra;
-    private $path;
+    public $cod_barra;
+    public $path;
 
     public function __construct($n = null , $c = null, $p = null)
     {   
@@ -18,7 +18,7 @@ class Producto
 
     public function toString()
     {
-        return $this->nombre . " - " . $this->cod_barra . " - " . $this->path . "\r\n";   
+        return $this->nombre . " - " . $this->cod_barra;   
     }
 
     public static function Guardar($obj)
@@ -27,12 +27,14 @@ class Producto
 
         $archivo = fopen("./Archivos/escritura.txt", "a");
 
-        $cad = fwrite($archivo, $obj->toString());
+        $cad = fwrite($archivo, $obj->toString() . " - " . $obj->path . "\r\n");
 
         if($cad > 0)
         {
             $retorno = true;
         }
+        
+        fclose($archivo);
 
         return $retorno;
     }
@@ -47,7 +49,7 @@ class Producto
         {
             $lectura = fgets($archivo);
             $auxiliar = explode(" - ", $lectura);
-            if(isset($auxiliar[0]) && isset($auxiliar[0]) && isset($auxiliar[0]))
+            if(isset($auxiliar[0]) && isset($auxiliar[1]) && isset($auxiliar[2]))
             {
                 array_push($array, new Producto($auxiliar[0], $auxiliar[1], $auxiliar[2]));
             }

@@ -1,33 +1,27 @@
 <?php
-
+session_start();
 include "productos.php";
 include "Archivos.php";
 
-$op = "MOSTRAR";
+$op = "op";
 
 switch($op)
 {
     case "op":
 
-    $producto = new Producto("tomas",126,Archivo::Subir());
+    $producto = new Producto($_POST["nombre"],$_POST["codigo"],Archivo::Subir());
 
     if(Producto::Guardar($producto))
     {
-        echo "Se pudo guardar";
+       echo "Se pudo guardar";
+       $_SESSION["clave"] = $producto->cod_barra;
+    }
+    else
+    {
+        echo "No se ha podido guardar con exito";
     }
 
-    case "MOSTRAR":
-
-    $array = Producto::TraerTodosLosProductos();
-    $destino = Archivo::Subir();
-    for($i = 0; $i < count($array); $i++)
-    {   
-        echo "<br/>";
-        echo ($array[$i]->toString());
-        echo "<img src='$destino' width='10%'";
-        echo "<br/>";
-    }
-        
+    var_dump($_SESSION);
     
 }
 

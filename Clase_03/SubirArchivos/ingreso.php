@@ -7,27 +7,58 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="Administracion.php" method="post" enctype="multipart/form-data"> 
-    <input type="file" name="archivo">
-    <table>
-
+    <form action="Administracion.php" method="POST" enctype="multipart/form-data"> 
+    <table border="1">
     <tr>
-        <td><input type="text" value="Nombre" name="Nombre"></td>
+        <td>
+        Nombre
+        <input type="text" value="" name="nombre" id="nombre">
+        </td>
+        <td rowspan = "10">
+        <?php
+        include "productos.php";
+    
+        $array = Producto::TraerTodosLosProductos();
+
+        for($i = 0; $i < count($array); $i++)
+        {  
+
+            if($array[$i]->path != null ){
+                echo "<img src='" . $array[$i]->path . "' width='10%'";
+            }
+
+            if(isset($array[$i])){
+            echo "<br/>";
+            echo ($array[$i]->toString());
+
+            echo "<br/>";
+            }
+        }
+        ?>
+        </td>
     </tr>
 
     <tr>
-        <td colspam><input type="text" value="Apellido" name="apellido"></td>
+        <td>
+        Codigo
+        <input type="text" value="" name="codigo" id="codigo">
+        </td>
     </tr>
 
     <tr>
         <td colspam>
-        <input type="submit" id="btnEnviar" value="Enviar">
-        <input type="reset" id="btnReset" value="Limpiar">
+        <input type="submit" id="btnGuardar" value="Guardar">
         </td>
     </tr>
 
+    <tr>
+        <td>
+            <input type="file" name="archivo">
+        </td>
+    </tr>
+    </td>
+
     </table>
-    
     
     </form>
 
