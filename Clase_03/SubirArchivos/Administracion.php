@@ -15,11 +15,13 @@ switch($op)
     {
        echo "Se pudo guardar";
        $_SESSION["clave"] = $producto->cod_barra;
+       header("location: ingreso.php");
     }
     else
     {
         echo "No se ha podido guardar con exito";
     }
+
 
     var_dump($_SESSION);
     

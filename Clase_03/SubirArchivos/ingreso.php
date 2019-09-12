@@ -47,13 +47,13 @@
 
     <tr>
         <td colspam>
-        <input type="submit" id="btnGuardar" value="Guardar">
+        <input type="file" name="archivo">
         </td>
     </tr>
 
     <tr>
         <td>
-            <input type="file" name="archivo">
+            <input type="submit" id="btnGuardar" value="Guardar" onclick=>
         </td>
     </tr>
     </td>
