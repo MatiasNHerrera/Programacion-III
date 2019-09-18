@@ -22,7 +22,7 @@ if(!$con)
 echo "<pre>Éxito: Se realizó una conexión a MySQL!!!." . PHP_EOL;
 echo "Información del host: " . mysqli_get_host_info($con) . PHP_EOL . "</pre>";
 
-switch("TraerTodos_Productos")
+switch("TraerTodos_Usuarios")
 {
     case "TraerTodos_Usuarios":
     $sql = "SELECT * FROM usuarios";
@@ -33,7 +33,45 @@ switch("TraerTodos_Productos")
          $user_arr[] = $row;
     }
 
-    var_dump($user_arr);
+    $table = "<table border='1'> 
+                        <tr>
+                            <td>
+                                Nombre
+                            </td>
+                            <td>
+                                Apellido
+                            </td>
+                            <td>
+                                Clave
+                            </td>
+                            <td>
+                                Perfil
+                            </td>
+                            <td>
+                                Estado
+                            </td>
+                            
+                        </tr>
+                        
+                        ";
+    
+        if($user_arr != null)
+        {
+            for($i =0; $i < mysqli_affected_rows($con); $i++)
+            {
+                $table.= "<tr>
+                            <td>". $user_arr[$i]->nombre. "</td>
+                            <td>". $user_arr[$i]->apellido ."</td>
+                            <td>". $user_arr[$i]->clave . "</td>
+                            <td>". $user_arr[$i]->perfil . "</td>
+                            <td>". $user_arr[$i]->estado . "</td>
+                            
+                          </tr>";
+            }
+        }
+
+        echo $table;
+
 
     break;
 
@@ -49,7 +87,44 @@ switch("TraerTodos_Productos")
         $user_arr[] = $row;
     }
 
-    var_dump($user_arr);
+    $table = "<table border='1'> 
+                        <tr>
+                            <td>
+                                Nombre
+                            </td>
+                            <td>
+                                Apellido
+                            </td>
+                            <td>
+                                Clave
+                            </td>
+                            <td>
+                                Perfil
+                            </td>
+                            <td>
+                                Estado
+                            </td>
+                            
+                        </tr>
+                        
+                        ";
+    
+        if($user_arr != null)
+        {
+            for($i =0; $i < mysqli_affected_rows($con); $i++)
+            {
+                $table.= "<tr>
+                            <td>". $user_arr[$i]->nombre. "</td>
+                            <td>". $user_arr[$i]->apellido ."</td>
+                            <td>". $user_arr[$i]->clave . "</td>
+                            <td>". $user_arr[$i]->perfil . "</td>
+                            <td>". $user_arr[$i]->estado . "</td>
+                            
+                          </tr>";
+            }
+        }
+
+        echo $table;
 
     break;
 
@@ -136,7 +211,7 @@ switch("TraerTodos_Productos")
              $user_arr[] = $row;
         }
 
-        $table = "<table> 
+        $table = "<table border='1'> 
                         <tr>
                             <td>
                                 Nombre
@@ -152,6 +227,20 @@ switch("TraerTodos_Productos")
                         
                         ";
     
+        if($user_arr != null)
+        {
+            for($i =0; $i < mysqli_affected_rows($con); $i++)
+            {
+                $table.= "<tr>
+                            <td>". $user_arr[$i]->id. "</td>
+                            <td>". $user_arr[$i]->codigo_barra ."</td>
+                            <td>". $user_arr[$i]->path_foto . "</td>
+            
+            
+                          </tr>";
+            }
+        }
+
         echo $table;
 
         break;
@@ -168,7 +257,38 @@ switch("TraerTodos_Productos")
         $user_arr[] = $row;
     }
 
-    var_dump($user_arr);
+    $table = "<table border='1'> 
+                        <tr>
+                            <td>
+                                Nombre
+                            </td>
+                            <td>
+                                Codigo De Barra
+                            </td>
+                            <td>
+                                Path
+                            </td>
+                            
+                        </tr>
+                        
+                        ";
+    
+        if($user_arr != null)
+        {
+            for($i =0; $i < mysqli_affected_rows($con); $i++)
+            {
+                $table.= "<tr>
+                            <td>". $user_arr[$i]->id. "</td>
+                            <td>". $user_arr[$i]->codigo_barra ."</td>
+                            <td>". $user_arr[$i]->path_foto . "</td>
+            
+            
+                          </tr>";
+            }
+        }
+
+        echo $table;
+    
 
     break;
 

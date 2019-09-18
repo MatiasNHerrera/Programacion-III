@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-09-2019 a las 17:00:53
--- Versión del servidor: 10.1.38-MariaDB
--- Versión de PHP: 7.3.2
+-- Tiempo de generación: 18-09-2019 a las 02:00:47
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `mercado`
 --
+CREATE DATABASE IF NOT EXISTS `mercado` DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci;
+USE `mercado`;
 
 -- --------------------------------------------------------
 
@@ -29,19 +31,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `productos` (
-  `id` int(11) NOT NULL,
-  `codigo_barra` varchar(50) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `path_foto` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(10) UNSIGNED NOT NULL,
+  `codigo_barra` varchar(30) COLLATE latin1_general_ci NOT NULL,
+  `nombre` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `path_foto` varchar(50) COLLATE latin1_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`id`, `codigo_barra`, `nombre`, `path_foto`) VALUES
-(2, '12345', 'banana', 'dsada.jpg'),
-(4, '32314', 'pera', 'dsadad.jpg');
+(2, '789', 'manzana', 'manzana.jpg'),
+(4, '333', 'banana', 'asdasd.jpg');
 
 -- --------------------------------------------------------
 
@@ -51,20 +53,21 @@ INSERT INTO `productos` (`id`, `codigo_barra`, `nombre`, `path_foto`) VALUES
 
 CREATE TABLE `usuarios` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `apellido` varchar(50) NOT NULL,
-  `clave` varchar(10) NOT NULL,
+  `nombre` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `apellido` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `clave` varchar(10) COLLATE latin1_general_ci NOT NULL,
   `perfil` int(11) NOT NULL,
-  `estado` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `estado` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `clave`, `perfil`, `estado`) VALUES
-(5, 'hernan', 'fernandez', '1234', 3, 2),
-(6, 'tomi', 'rosita', '1234', 4, 2);
+(2, 'thomas', 'rosas', 'perro', 1, 1),
+(4, 'matias', 'herrera', '333', 2, 2),
+(5, 'hernan', 'sanchez', '344', 3, 3);
 
 --
 -- Índices para tablas volcadas
@@ -90,13 +93,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
