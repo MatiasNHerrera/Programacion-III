@@ -9,7 +9,6 @@ $base = "mercado";
 $con = @mysqli_connect($host, $user, $pass, $base);
 
 echo "<pre>con = mysqli_connect(host, user, pass)</pre>";
-echo $queHago;
 
 if(!$con)
 {
@@ -22,15 +21,21 @@ if(!$con)
 echo "<pre>Éxito: Se realizó una conexión a MySQL!!!." . PHP_EOL;
 echo "Información del host: " . mysqli_get_host_info($con) . PHP_EOL . "</pre>";
 
-switch("TraerTodos_Usuarios")
+switch($queHago)
 {
     case "TraerTodos_Usuarios":
-    $sql = "SELECT * FROM usuarios";
-
-    $rs = $con->query($sql); //ejecuto la consulta
-
-    while ($row = $rs->fetch_object()){ //fetch_all / fetch_assoc / fetch_array([MYSQLI_NUM | MYSQLI_ASSOC | MYSQLI_BOTH])
-         $user_arr[] = $row;
+    try
+    {
+    $user = "root";
+    $pass = "";
+    $pdo = new PDO("mysql:host=localhost;dbname=mercado;charset=utf8", $user, $pass);
+    
+    $datos = $pdo->prepare("SELECT * FROM usuarios");
+    $datos->execute();
+    }
+    catch(PDOException $e)
+    {
+        echo "Error: ". $e->getMessage();
     }
 
     $table = "<table border='1'> 
@@ -55,21 +60,21 @@ switch("TraerTodos_Usuarios")
                         
                         ";
     
-        if($user_arr != null)
-        {
-            for($i =0; $i < mysqli_affected_rows($con); $i++)
+            while($user_arr = $datos->fetch())
             {
-                $table.= "<tr>
-                            <td>". $user_arr[$i]->nombre. "</td>
-                            <td>". $user_arr[$i]->apellido ."</td>
-                            <td>". $user_arr[$i]->clave . "</td>
-                            <td>". $user_arr[$i]->perfil . "</td>
-                            <td>". $user_arr[$i]->estado . "</td>
+                if($user_arr != null)
+                {
+                    $table.= "<tr>
+                            <td>". $user_arr['nombre']. "</td>
+                            <td>". $user_arr['apellido'] ."</td>
+                            <td>". $user_arr['clave'] . "</td>
+                            <td>". $user_arr['perfil'] . "</td>
+                            <td>". $user_arr['estado'] . "</td>
                             
                           </tr>";
+                }
             }
-        }
-
+        
         echo $table;
 
 
@@ -77,14 +82,21 @@ switch("TraerTodos_Usuarios")
 
     case "TraerPorId_Usuarios":
 
+    try
+    {
     $id_usuario = $_POST["id_usuario"];
+    echo $id_usuario;
 
-    $sql = "SELECT * FROM usuarios where id=". $id_usuario;
-
-    $rs = $con->query($sql); //ejecuto la consulta
-
-    while ($row = $rs->fetch_object()){ //fetch_all / fetch_assoc / fetch_array([MYSQLI_NUM | MYSQLI_ASSOC | MYSQLI_BOTH])
-        $user_arr[] = $row;
+    $user = "root";
+    $pass = "";
+    $pdo = new PDO("mysql:host=localhost;dbname=mercado;charset=utf8", $user, $pass);
+    
+    $datos = $pdo->prepare("SELECT * FROM usuarios WHERE id= :id");
+    $datos->execute(array(':id'=> $id_usuario));
+    }
+    catch(PDOException $e)
+    {
+        echo "Error: ". $e->getMessage();
     }
 
     $table = "<table border='1'> 
@@ -109,21 +121,21 @@ switch("TraerTodos_Usuarios")
                         
                         ";
     
-        if($user_arr != null)
-        {
-            for($i =0; $i < mysqli_affected_rows($con); $i++)
-            {
-                $table.= "<tr>
-                            <td>". $user_arr[$i]->nombre. "</td>
-                            <td>". $user_arr[$i]->apellido ."</td>
-                            <td>". $user_arr[$i]->clave . "</td>
-                            <td>". $user_arr[$i]->perfil . "</td>
-                            <td>". $user_arr[$i]->estado . "</td>
-                            
-                          </tr>";
-            }
-        }
-
+                        while($user_arr = $datos->fetch())
+                        {
+                            var_dump($user_arr);
+                            if($user_arr != null)
+                            {
+                            $table.= "<tr>
+                                        <td>". $user_arr['nombre']. "</td>
+                                        <td>". $user_arr['apellido'] ."</td>
+                                        <td>". $user_arr['clave'] . "</td>
+                                        <td>". $user_arr['perfil'] . "</td>
+                                        <td>". $user_arr['estado'] . "</td>
+                                        
+                                      </tr>";
+                            }
+                        }
         echo $table;
 
     break;
@@ -152,16 +164,27 @@ switch("TraerTodos_Usuarios")
     $clave = $_POST["clave_usuario"];
     $perfil = $_POST["perfil_usuario"];
     $estado = $_POST["estado_usuario"];
+    $user = "root";
+    $pass = "";
 
-
-    $sql = "INSERT INTO usuarios (nombre,apellido,clave,perfil,estado)
-                VALUES('$nombre','$apellido','$clave','$perfil','$estado')";
-
-    $rs = $con->query($sql);
-    if(mysqli_affected_rows($con)>0)
+    try
     {
-        echo "agregado con exito";
+    $pdo = new PDO("mysql:host=localhost;dbname=mercado;charset=utf8", $user, $pass);
+
+    $datos = $pdo->prepare("INSERT INTO usuarios (nombre,apellido,clave,perfil,estado)
+    VALUES('$nombre','$apellido','$clave','$perfil','$estado')");
+
+    $validacion = $datos->execute();
     }
+    catch(PDOException $e)
+    {
+        echo "Error: ". $e->getMessage();
+    }
+
+    if($validacion)
+        {
+            echo "Modificado Correctamente!";
+        }
 
     break;
 
@@ -174,15 +197,25 @@ switch("TraerTodos_Usuarios")
         $perfil = $_POST["perfil_usuario"];
         $estado = $_POST["estado_usuario"];
 
-        $sql = "UPDATE usuarios SET nombre='$nombre', apellido='$apellido',clave='$clave',perfil='$perfil', estado='$estado' 
-        WHERE id=" . $id_usuario;
-
-        $rs = $con->query($sql);
-
-        if(mysqli_affected_rows($con)> 0)
+        try
         {
-            echo "modificado con exito";
+        $pdo = new PDO("mysql:host=localhost;dbname=mercado;charset=utf8", $user, $pass);
+
+        $datos = $pdo->prepare("UPDATE usuarios SET nombre='$nombre', apellido='$apellido',clave='$clave',perfil='$perfil', estado='$estado' 
+        WHERE id=:id");
+
+        $validacion = $datos->execute(array(':id' => 2));
         }
+        catch(PDOException $e)
+        {
+            echo "Error: ". $e->getMessage();
+        }
+
+        if($validacion)
+        {
+            echo "Modificado Correctamente!";
+        }
+
 
         break;
 
@@ -190,13 +223,22 @@ switch("TraerTodos_Usuarios")
 
         $id_usuario = $_POST["id_usuario"];
 
-        $sql = "DELETE FROM usuarios WHERE id=" . $id_usuario;
-
-        $rs = $con->query($sql);
-
-        if(mysqli_affected_rows($con)>0)
+        try
         {
-            echo "usuario eliminado con exito";
+        $pdo = new PDO("mysql:host=localhost;dbname=mercado;charset=utf8", $user, $pass);
+
+        $datos = $pdo->prepare("DELETE FROM usuarios WHERE id=:id");
+
+        $validacion = $datos->execute(array(':id' => 5));
+        }
+        catch(PDOException $e)
+        {
+            echo "Error: ". $e->getMessage();
+        }
+
+        if($validacion)
+        {
+            echo "Eliminado Correctamente!";
         }
 
         break;
