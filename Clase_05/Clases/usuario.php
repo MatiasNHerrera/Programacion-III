@@ -20,28 +20,28 @@ class Usuario
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT nombre,apellido,clave,perfil,estado,Correo FROM usuarios");        
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT nombre,apellido,clave,perfil,estado,correo FROM usuarios");        
         
         $consulta->execute();
         
-        $consulta->setFetchMode(PDO::FETCH_INTO, new Usuario);                                                
+        $retorno = $consulta->fetchAll(PDO::FETCH_OBJ); 
 
-        return $consulta; 
+        return $retorno; 
     }
 
     public function InsertarUsuario()
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT INTO usuarios (nombre,apellido,clave,perfil,estado,Correo)"
-                                                    . "VALUES(:nombre, :apellido, :clave, :perfil, :estado, :Correo)");
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT INTO usuarios (nombre,apellido,clave,perfil,estado,correo)"
+                                                    . "VALUES(:nombre, :apellido, :clave, :perfil, :estado, :correo)");
         
         $consulta->bindValue(':nombre', $this->nombre);
         $consulta->bindValue(':apellido', $this->apellido);
         $consulta->bindValue(':clave', $this->clave);
         $consulta->bindValue(':perfil', $this->perfil);
         $consulta->bindValue(':estado', $this->estado);
-        $consulta->bindValue(':Correo', $this->correo);
+        $consulta->bindValue(':correo', $this->correo);
 
         $validacion = $consulta->execute(); 
         
@@ -53,7 +53,7 @@ class Usuario
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         
-        $consulta =$objetoAccesoDato->RetornarConsulta("UPDATE usuarios SET nombre=:nombre, apellido=:apellido,clave=:clave,perfil=:perfil, estado=:estado, Correo=:correo 
+        $consulta =$objetoAccesoDato->RetornarConsulta("UPDATE usuarios SET nombre=:nombre, apellido=:apellido,clave=:clave,perfil=:perfil, estado=:estado, correo=:correo 
         WHERE id=:id");
         
         $consulta->bindValue(':nombre', $this->nombre);
@@ -61,7 +61,7 @@ class Usuario
         $consulta->bindValue(':clave', $this->clave);
         $consulta->bindValue(':perfil', $this->perfil);
         $consulta->bindValue(':estado', $this->estado);
-        $consulta->bindValue(':Correo', $this->correo);
+        $consulta->bindValue(':correo', $this->correo);
         $consulta->bindValue(':id', $this->id);
 
 
@@ -82,5 +82,22 @@ class Usuario
         $validacion = $consulta->execute();
 
         return $validacion;
+    }
+
+    public static function validarBD($correo, $clave)
+    {
+        $datos = Usuario::TraerTodosUsuarios();
+        $retorno = json_decode('{"validacion" : false}');
+
+        foreach($datos as $datitos)
+        {
+            if($datitos->correo == $correo && $datitos->clave == $clave)
+            {
+                $retorno->validacion = true;
+                break;
+            }
+        }
+
+        return $retorno;
     }
 }
