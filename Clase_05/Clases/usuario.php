@@ -10,6 +10,18 @@ class Usuario
     public $perfil;
     public $estado;
     public $correo;
+    public $foto;
+
+    public function __construct($json)
+    {
+        $this->nombre = $json->nombre;
+        $this->apellido = $json->apellido;
+        $this->clave = $json->clave;
+        $this->perfil = $json->perfil;
+        $this->correo = $json->correo;
+        $this->estado = 1;
+        $this->foto = $json;
+    }
 
     public function MostrarDatos()
     {
@@ -31,19 +43,25 @@ class Usuario
 
     public function InsertarUsuario()
     {
+        $validacion = false;
+
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT INTO usuarios (nombre,apellido,clave,perfil,estado,correo)"
-                                                    . "VALUES(:nombre, :apellido, :clave, :perfil, :estado, :correo)");
-        
+        //$datos = json_decode($_POST["usuario"]);
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT INTO usuarios (nombre,apellido,clave,perfil,estado,correo,foto)"
+                                                    . "VALUES(:nombre, :apellido, :clave, :perfil, :estado, :correo, :foto)");
+
         $consulta->bindValue(':nombre', $this->nombre);
         $consulta->bindValue(':apellido', $this->apellido);
         $consulta->bindValue(':clave', $this->clave);
         $consulta->bindValue(':perfil', $this->perfil);
-        $consulta->bindValue(':estado', $this->estado);
-        $consulta->bindValue(':correo', $this->correo);
+        $consulta->bindValue(':estado', 1);
+        $consulta->bindValue(':correo', $this->correo);    
+        $consulta->bindValue(':foto', Usuario::SubirFoto());
 
-        $validacion = $consulta->execute(); 
+        if(!Usuario::validarBD($this->correo, $this->clave))
+        {
+            $validacion = $consulta->execute(); 
+        }
         
         return $validacion;
 
@@ -86,18 +104,31 @@ class Usuario
 
     public static function validarBD($correo, $clave)
     {
-        $datos = Usuario::TraerTodosUsuarios();
-        $retorno = json_decode('{"validacion" : false}');
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $datos = $objetoAccesoDato->RetornarConsulta("SELECT correo, clave FROM usuarios WHERE correo ='". $correo ."' AND clave = '". $clave . "'");
+        $datos->execute();
 
-        foreach($datos as $datitos)
+        $retorno = false;
+
+        if($datos->rowCount() > 0)
         {
-            if($datitos->correo == $correo && $datitos->clave == $clave)
-            {
-                $retorno->validacion = true;
-                break;
-            }
+            $retorno = true;
         }
 
         return $retorno;
+    }
+
+    public static function SubirFoto()
+    {
+        $info = json_decode($_POST["usuario"]);
+        $retorno = false;
+        $destino = "fotos/prueba.jpg"; //sigo parado en verificacion.
+
+        if(move_uploaded_file($_FILES["foto"]["tmp_name"], $destino))
+        {
+            $retorno = $destino;
+        }
+
+        return $destino;
     }
 }
