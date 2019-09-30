@@ -1,0 +1,9 @@
+{
+    "name": "Utn/Herrera",
+    "description": "convierte a pdf",
+    "require":
+    {
+        "mpdf/mpdf": "8.*"
+    }
+
+}

@@ -5,10 +5,16 @@ function EnviarDatos() {
     var correo = document.getElementById("txtCorreo").value;
     var clave = document.getElementById("txtClave").value;
     var json = { "correo": correo, "clave": clave };
-    http.send("informacion=" + JSON.stringify(json));
+    http.send("informacion=" + JSON.stringify(json) + "&queHago=validar");
     http.onreadystatechange = function () {
         if (http.status == 200 && http.readyState == 4) {
-            alert(http.responseText);
+            var obj = JSON.parse(http.responseText);
+            if (obj.existe) {
+                window.location.href = "test_pdf.php";
+            }
+            else {
+                alert("no registrado");
+            }
         }
     };
 }

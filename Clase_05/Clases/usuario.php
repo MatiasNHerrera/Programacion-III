@@ -20,7 +20,7 @@ class Usuario
         $this->perfil = $json->perfil;
         $this->correo = $json->correo;
         $this->estado = 1;
-        $this->foto = $json;
+        $this->foto = $_FILES["foto"]["name"];
     }
 
     public function MostrarDatos()
@@ -32,7 +32,7 @@ class Usuario
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT nombre,apellido,clave,perfil,estado,correo FROM usuarios");        
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT nombre,apellido,clave,perfil,estado,correo,foto FROM usuarios");        
         
         $consulta->execute();
         
@@ -105,24 +105,24 @@ class Usuario
     public static function validarBD($correo, $clave)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $datos = $objetoAccesoDato->RetornarConsulta("SELECT correo, clave FROM usuarios WHERE correo ='". $correo ."' AND clave = '". $clave . "'");
+        $datos = $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuarios WHERE correo ='". $correo ."' AND clave = '". $clave . "'");
         $datos->execute();
-
-        $retorno = false;
+        $json = json_decode('{"existe" : false, "user" : null }');
 
         if($datos->rowCount() > 0)
         {
-            $retorno = true;
+            $json->existe = true;
+            $json->user = $datos->fetchAll(PDO::FETCH_OBJ);
         }
 
-        return $retorno;
+        return $json;
     }
 
     public static function SubirFoto()
     {
         $info = json_decode($_POST["usuario"]);
         $retorno = false;
-        $destino = "fotos/prueba.jpg"; //sigo parado en verificacion.
+        $destino = "/fotos/ ". $_FILES["foto"]["name"]; //sigo parado en verificacion.
 
         if(move_uploaded_file($_FILES["foto"]["tmp_name"], $destino))
         {

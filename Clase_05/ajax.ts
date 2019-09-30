@@ -10,13 +10,22 @@ function EnviarDatos() : void
     let correo = (<HTMLInputElement>document.getElementById("txtCorreo")).value;
     let clave = (<HTMLInputElement>document.getElementById("txtClave")).value;
     let json = {"correo" : correo, "clave" : clave };
-    http.send("informacion=" + JSON.stringify(json));
+    http.send("informacion=" + JSON.stringify(json) + "&queHago=validar");
 
     http.onreadystatechange = () =>
     {
         if(http.status == 200 && http.readyState == 4)
         {
-            alert(http.responseText);
+            let obj : any = JSON.parse(http.responseText);
+
+            if(obj.existe)
+            {
+                window.location.href = "test_pdf.php";
+            }
+            else
+            {
+                alert("no registrado");
+            }
         }
     }
 
