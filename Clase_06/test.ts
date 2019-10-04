@@ -7,7 +7,7 @@ function mostrarMensaje()
         let respuesta;
         let form = new FormData();
         let archivo = $("#archivo");
-        alert(archivo);
+
         form.append("mensaje", mensaje.toString());
         form.append("archivo",archivo.prop("files")[0]);
         form.append("queHago", "1");
@@ -28,7 +28,7 @@ function mostrarMensaje()
         ajax.done(function(respuesta)
         {
             $("#divMensaje").html(respuesta.mensaje + " - " + respuesta.fecha);
-            $("#divMensaje").html($("#archivo").attr("src"));
+            $("#fotoMostrada").attr("src", respuesta.foto);
         })
         ajax.fail(function(){
 

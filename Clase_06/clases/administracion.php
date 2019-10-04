@@ -7,6 +7,7 @@ $queHago = isset($_POST["queHago"]) ? $_POST["queHago"] : null;
 switch($queHago)
 {
     case "1": 
+    
     $validacion = Archivo::SubirArchivo();
 
     if($validacion["Exito"])

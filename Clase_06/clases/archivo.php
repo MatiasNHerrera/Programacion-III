@@ -4,10 +4,9 @@ class Archivo
 {
     public static function SubirArchivo()
     {
-        $destino = "./fotos/" . date("d-m-y") . ".jpg";
+        $destino = "../fotos/" . date("d-m-y") . ".jpg";
         $retorno["Exito"] =  TRUE;
-        $retorno["foto"] = date("d-m-y") . ".jpg";
-        var_dump($_FILES);
+        $retorno["foto"] = "./fotos/" . date("d-m-y") . ".jpg";
 
 		if ($_FILES["archivo"]["size"] > 1000000) {
 			$retorno["Exito"] = FALSE;
