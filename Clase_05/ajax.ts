@@ -24,7 +24,7 @@ function EnviarDatos() : void
             }
             else
             {
-                alert("no registrado");
+                window.location.href = "registro.php";
             }
         }
     }

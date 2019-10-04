@@ -13,7 +13,7 @@ function EnviarDatos() {
                 window.location.href = "test_pdf.php";
             }
             else {
-                alert("no registrado");
+                window.location.href = "registro.php";
             }
         }
     };

@@ -12,7 +12,7 @@ if(isset($_SESSION["perfil"]) && $_SESSION["perfil"] == 1)
     {
         foreach($usuarios as $datitos)
         {
-            $mpdf->WriteHTML($datitos->nombre . " - ".  $datitos->apellido . " - " . $datitos->perfil. " - " . $datitos->estado. " - " . $datitos->correo . " - " . "<img src='fotos/ . " . $datitos->foto. "' width='100px' heigth='100px'> ");
+            $mpdf->WriteHTML($datitos->nombre . " - ".  $datitos->apellido . " - " . $datitos->perfil. " - " . $datitos->estado. " - " . $datitos->correo . " - " . "<img src='" . $datitos->foto. "' width='100px' heigth='100px'> ");
         }
 
         foreach($productos as $datitos)

@@ -24,7 +24,7 @@ switch($queHago)
     }
     else
     {
-        echo "los datos no se encuentran en la tabla";
+        
     }
 
     echo json_encode($validacion);
