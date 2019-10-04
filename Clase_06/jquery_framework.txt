@@ -1,0 +1,6 @@
+https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
+
+transpilador de js a ts
+En la consola parado en la carpeta: 
+-npm init
+-npm install --save
