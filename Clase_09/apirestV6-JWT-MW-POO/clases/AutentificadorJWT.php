@@ -4,7 +4,7 @@ use Firebase\JWT\JWT;
 
 class AutentificadorJWT
 {
-    private static $claveSecreta = 'ClaveSuperSecreta@';
+    private static $claveSecreta = "clave";
     private static $tipoEncriptacion = ['HS256'];
     private static $aud = null;
     
@@ -21,7 +21,7 @@ class AutentificadorJWT
             'exp' => $ahora + (60*60),
             'aud' => self::Aud(),
             'data' => $datos,
-            'app'=> "API REST CD 2017"
+            'app'=> "API REST USUARIOS 2017"
         );
      
         return JWT::encode($payload, self::$claveSecreta);
@@ -34,6 +34,7 @@ class AutentificadorJWT
         {
             throw new Exception("El token esta vacio.");
         } 
+        
         // las siguientes lineas lanzan una excepcion, de no ser correcto o de haberse terminado el tiempo       
         try {
             $decodificado = JWT::decode(
@@ -71,7 +72,7 @@ class AutentificadorJWT
         )->data;
     }
     
-    private static function Aud()
+    public static function Aud()
     {
         $aud = '';
         

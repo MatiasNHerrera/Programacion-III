@@ -60,6 +60,7 @@ $app->group("/login", function(){
         $payload = array(
         	  'iat'=>$ahora,
             'exp' => $ahora + (60*60),
+            'aud' => AutentificadorJWT::Aud(),
             'data' => $datos,
             'app'=> "API REST CD 2017"
         );

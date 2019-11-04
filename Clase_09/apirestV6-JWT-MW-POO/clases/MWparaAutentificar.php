@@ -27,34 +27,7 @@ class MWparaAutentificar
 	   
 		if($request->isGet())
 		{
-		// $response->getBody()->write('<p>NO necesita credenciales para los get </p>');
-		   $token = $request->getHeader("token");
-		   $tokenReal = $token[0];
-
-		   try
-		   {
-		  	 $payload = AutentificadorJWT::verificarToken($tokenReal);
-		   	 $objDelaRespuesta->valido = true;
-		   }
-		   catch(Exception $e)
-		   {
-				$objDelaRespuesta->valido = false;
-		   }
-		   
-		   if($objDelaRespuesta->valido)
-		   {
-				$datos = AutentificadorJWT::ObtenerData($token);
-
-				if($datos->perfil == "admin")
-				{
-					echo "nop";
-				}
-				else
-				{
-					echo "ok";
-					//$response = $next($request, $response);
-				}
-		   }
+			$response = $next($request, $response);
 		}
 		else
 		{
@@ -75,12 +48,10 @@ class MWparaAutentificar
 			//$token="octavioAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
 	
 			//tomo el token del header
-			/*
-				$arrayConToken = $request->getHeader('token');
-				$token=$arrayConToken[0];			
-			*/
-			//var_dump($token);
-			$objDelaRespuesta->esValido=true; 
+			
+			$arrayConToken = $request->getHeader('token');
+			$token=$arrayConToken[0];			
+
 			try 
 			{
 				//$token="";
@@ -95,25 +66,18 @@ class MWparaAutentificar
 
 			if($objDelaRespuesta->esValido)
 			{						
-				if($request->isPost())
-				{		
-					// el post sirve para todos los logeados			    
-					$response = $next($request, $response);
-				}
-				else
+				$payload=AutentificadorJWT::ObtenerData($token);
+				//var_dump($payload);
+				// DELETE,PUT y DELETE sirve para todos los logeados y admin
+				if($payload->perfil=="admin")
 				{
-					$payload=AutentificadorJWT::ObtenerData($token);
-					//var_dump($payload);
-					// DELETE,PUT y DELETE sirve para todos los logeados y admin
-					if($payload->perfil=="Administrador")
-					{
-						$response = $next($request, $response);
-					}		           	
-					else
-					{	
-						$objDelaRespuesta->respuesta="Solo administradores";
-					}
-				}		          
+					$response = $next($request, $response);
+				}		           	
+				else
+				{	
+					$objDelaRespuesta->respuesta="Solo administradores";
+				}
+						          
 			}    
 			else
 			{
